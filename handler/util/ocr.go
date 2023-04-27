@@ -50,13 +50,12 @@ func (u *OCR) Handle(e *gin.Engine) {
 
 		} else {
 			fmt.Println("Text:")
-			words := []string{}
+			fmt.Printf("%q\n", annotations[0].Description)
+			res := []string{}
 			for _, annotation := range annotations[1:] {
-				//fmt.Printf("%q\n", annotation.Description)
-				words = append(words, annotation.Description)
+				res = append(res, annotation.Description)
 			}
-			fmt.Printf("%q\n", words)
-			c.JSON(http.StatusAccepted, words)
+			c.JSON(http.StatusAccepted, res)
 		}
 	})
 }
