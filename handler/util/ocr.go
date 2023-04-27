@@ -50,8 +50,49 @@ func (u *OCR) Handle(e *gin.Engine) {
 
 		} else {
 			fmt.Println("Text:")
-			fmt.Printf("%q\n", annotations[0].Description)
-			c.JSON(http.StatusAccepted, annotations[0].Description)
+			words := []string{}
+			for _, annotation := range annotations[1:] {
+				//fmt.Printf("%q\n", annotation.Description)
+				words = append(words, annotation.Description)
+			}
+			fmt.Printf("%q\n", words)
+			c.JSON(http.StatusAccepted, words)
 		}
 	})
 }
+
+// func DetectText(file string) error {
+// 	ctx := context.Background()
+
+// 	client, err := vision.NewImageAnnotatorClient(ctx)
+// 	if err != nil {
+
+// 		return err
+// 	}
+// 	f, err := os.Open(file)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer f.Close()
+
+// 	image, err := vision.NewImageFromReader(f)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	annotations, err := client.DetectTexts(ctx, image, nil, 10)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	if len(annotations) == 0 {
+// 		fmt.Println("No text found.")
+// 	} else {
+// 		fmt.Println("Text:")
+// 		for _, annotation := range annotations {
+// 			fmt.Printf("%q\n", annotation.Description)
+// 		}
+// 	}
+
+// 	return nil
+// }

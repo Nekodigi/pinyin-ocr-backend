@@ -11,8 +11,10 @@ func main() {
 
 	//handler.Firestore()
 	if len(os.Args) == 2 && os.Args[1] == "test" {
-		//handler.Firestore()
-
+		// err := util.DetectText("sample.png")
+		// if err != nil {
+		// 	fmt.Errorf("%+v", err)
+		// }
 	} else {
 		engine := gin.Default()
 		handler.Router(engine)
