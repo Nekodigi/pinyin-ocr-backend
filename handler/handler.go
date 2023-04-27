@@ -9,17 +9,10 @@ import (
 	"github.com/Nekodigi/pinyin-ocr-backend/config"
 	"github.com/Nekodigi/pinyin-ocr-backend/handler/util"
 	"github.com/gin-gonic/gin"
-	"github.com/sashabaranov/go-openai"
-)
-
-var (
-	openaiClient *openai.Client
 )
 
 func init() {
-	conf := config.Load()
-
-	openaiClient = openai.NewClient(conf.ChatGPTToken)
+	config.Load()
 
 	_ = context.Background()
 	_ = vision.ImageAnnotatorClient{}
@@ -46,5 +39,7 @@ func Router(e *gin.Engine) {
 	e.Use(CORSMiddleware())
 	e.GET("/ping", func(ctx *gin.Context) { ctx.String(http.StatusOK, "pong") })
 	(&util.OCR{}).Handle(e)
-	(&util.GPT{OpenAI: openaiClient}).Handle(e)
+	//(&util.GPT{OpenAI: openaiClient}).Handle(e)
+	(&util.Segmentation{}).Handle(e)
+	(&util.Translate{}).Handle(e)
 }

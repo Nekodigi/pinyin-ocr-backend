@@ -51,7 +51,11 @@ func (u *OCR) Handle(e *gin.Engine) {
 		} else {
 			fmt.Println("Text:")
 			fmt.Printf("%q\n", annotations[0].Description)
-			c.JSON(http.StatusAccepted, annotations[0].Description)
+			res := []string{}
+			for _, annotation := range annotations[1:] {
+				res = append(res, annotation.Description)
+			}
+			c.JSON(http.StatusAccepted, res)
 		}
 	})
 }
