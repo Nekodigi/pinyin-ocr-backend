@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
+	"github.com/Nekodigi/pinyin-ocr-backend/config"
 	"github.com/Nekodigi/pinyin-ocr-backend/handler"
 	"github.com/Nekodigi/pinyin-ocr-backend/handler/util"
 	"github.com/gin-gonic/gin"
@@ -18,7 +20,14 @@ func main() {
 		if err != nil {
 			fmt.Errorf("%+v", err)
 		}
+		conf := config.Load()
+
 		fmt.Println(res)
+		hres, err := http.NewRequest("GET", conf.ChargeApiUrl+"/subscribe?service_id=test&plan_id=basic&user_id=u0007", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(hres, err)
 	} else {
 		engine := gin.Default()
 		handler.Router(engine)
