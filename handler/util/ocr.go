@@ -9,17 +9,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type (
-	OCR struct {
-	}
-)
+type ()
 
-func (u *OCR) Handle(e *gin.Engine) {
+func (u *Util) HandleOcr(e *gin.Engine) {
 	e.POST("/ocr", func(c *gin.Context) {
 		// Using 'ShouldBind'
 		formFile, err := c.FormFile("image")
 		if err != nil {
 			c.JSON(http.StatusBadRequest, err)
+		}
+		user_id := c.PostForm("user_id")
+
+		//charge 0.3
+		if !u.Chrg.UseQuota(c, user_id, 0.3) {
+			return
 		}
 
 		ctx := context.Background()

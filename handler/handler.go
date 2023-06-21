@@ -7,16 +7,23 @@ import (
 
 	vision "cloud.google.com/go/vision/apiv1"
 	"github.com/Nekodigi/pinyin-ocr-backend/config"
+	"github.com/Nekodigi/pinyin-ocr-backend/handler/operation"
 	"github.com/Nekodigi/pinyin-ocr-backend/handler/util"
+	"github.com/Nekodigi/pinyin-ocr-backend/infrastructure/charge"
 	"github.com/gin-gonic/gin"
 )
 
+var (
+	chrg *charge.Charge
+)
+
 func init() {
-	config.Load()
+	conf := config.Load()
 
 	_ = context.Background()
 	_ = vision.ImageAnnotatorClient{}
 	_ = os.Open
+	chrg = charge.InitCharge(conf)
 }
 
 func CORSMiddleware() gin.HandlerFunc {
@@ -38,8 +45,6 @@ func CORSMiddleware() gin.HandlerFunc {
 func Router(e *gin.Engine) {
 	e.Use(CORSMiddleware())
 	e.GET("/ping", func(ctx *gin.Context) { ctx.String(http.StatusOK, "pong") })
-	(&util.OCR{}).Handle(e)
-	//(&util.GPT{OpenAI: openaiClient}).Handle(e)
-	(&util.Segmentation{}).Handle(e)
-	(&util.Translate{}).Handle(e)
+	(&util.Util{Chrg: chrg}).Handle(e)
+	(&operation.Operation{Chrg: chrg}).Handle(e)
 }

@@ -1,13 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
 	"os"
 
-	"github.com/Nekodigi/pinyin-ocr-backend/config"
 	"github.com/Nekodigi/pinyin-ocr-backend/handler"
-	"github.com/Nekodigi/pinyin-ocr-backend/handler/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,18 +12,14 @@ func main() {
 	//handler.Firestore()
 	//pinyin formatter!
 	if len(os.Args) == 2 && os.Args[1] == "test" {
-		res, err := util.TranslateText("zh", "The Go Gopher is cute")
-		if err != nil {
-			fmt.Errorf("%+v", err)
-		}
-		conf := config.Load()
+		// res, err := util.TranslateText("zh", "The Go Gopher is cute")
+		// if err != nil {
+		// 	fmt.Errorf("%+v", err)
+		// }
+		//conf := config.Load()
 
-		fmt.Println(res)
-		hres, err := http.NewRequest("GET", conf.ChargeApiUrl+"/subscribe?service_id=test&plan_id=basic&user_id=u0007", nil)
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(hres, err)
+		// c := charge.InitCharge(conf)
+		// fmt.Println(c.UseQuota("u0007", 1.0))
 	} else {
 		engine := gin.Default()
 		handler.Router(engine)

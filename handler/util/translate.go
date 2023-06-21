@@ -11,10 +11,8 @@ import (
 )
 
 type (
-	Translate struct {
-	}
-
 	TranslateReq struct {
+		UserId string
 		Text   string
 		LangTo string
 	}
@@ -26,11 +24,15 @@ func init() {
 
 }
 
-func (u *Translate) Handle(e *gin.Engine) {
+func (u *Util) HandleTranslate(e *gin.Engine) {
 
 	e.POST("/translate", func(c *gin.Context) {
 		var translateReq TranslateReq
 		c.BindJSON(&translateReq)
+		//0.004 per char
+		if !u.Chrg.UseQuota(c, translateReq.UserId, float64(len(translateReq.Text))*0.004) {
+			return
+		}
 		fmt.Println(translateReq.Text)
 		res, _ := TranslateText(translateReq.LangTo, translateReq.Text)
 		c.JSON(http.StatusAccepted, res)
