@@ -27,7 +27,7 @@ func (u *Util) HandleSegmentation(e *gin.Engine) {
 	e.POST("/segmentation", func(c *gin.Context) {
 		var segmentationReq SegmentationReq
 		c.BindJSON(&segmentationReq)
-		fmt.Println(segmentationReq.Text)
+		fmt.Println(segmentationReq)
 		//0.004 per char
 		if !u.Chrg.UseQuota(c, segmentationReq.UserId, float64(len(segmentationReq.Text))*0.004) {
 			return

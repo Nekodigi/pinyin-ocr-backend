@@ -7,7 +7,6 @@ import (
 
 	vision "cloud.google.com/go/vision/apiv1"
 	"github.com/Nekodigi/pinyin-ocr-backend/config"
-	"github.com/Nekodigi/pinyin-ocr-backend/handler/operation"
 	"github.com/Nekodigi/pinyin-ocr-backend/handler/util"
 	"github.com/Nekodigi/pinyin-ocr-backend/infrastructure/charge"
 	"github.com/gin-gonic/gin"
@@ -46,5 +45,5 @@ func Router(e *gin.Engine) {
 	e.Use(CORSMiddleware())
 	e.GET("/ping", func(ctx *gin.Context) { ctx.String(http.StatusOK, "pong") })
 	(&util.Util{Chrg: chrg}).Handle(e)
-	(&operation.Operation{Chrg: chrg}).Handle(e)
+	// (&operation.Operation{Chrg: chrg}).Handle(e)
 }
